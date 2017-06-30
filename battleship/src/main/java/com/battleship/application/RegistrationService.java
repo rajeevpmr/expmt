@@ -1,17 +1,14 @@
-/**
- * 
- */
 package com.battleship.application;
 
+import com.battleship.application.dto.RegisterNewPlayerDTO;
 import com.battleship.domain.model.game.Game;
 import com.battleship.domain.model.handling.GameInitiationException;
 import com.battleship.domain.model.handling.InvalidPlayerException;
 import com.battleship.domain.model.handling.NoGameAvailableException;
-import com.battleship.domain.model.player.Player;
 
 
 /**
- * This is registration service for new player.
+ * This is the Registration Service for new player.
  *  
  * @author amall3
  *
@@ -41,6 +38,6 @@ public interface RegistrationService {
 	 * @throws NoGameAvailableException 
 	 * @throws InvalidPlayerObject
 	 */
-	public Player registerNewPlayer(String Name) throws InvalidPlayerException, GameInitiationException, NoGameAvailableException;
+	public RegisterNewPlayerDTO registerNewPlayer(String name) throws InvalidPlayerException, GameInitiationException, NoGameAvailableException;
 	
 }

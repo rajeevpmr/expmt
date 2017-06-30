@@ -3,18 +3,19 @@ package com.battleship.application.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.battleship.application.RegistrationService;
-import com.battleship.domain.model.game.BattleShipGameRepository;
+import com.battleship.application.dto.RegisterNewPlayerDTO;
+import com.battleship.domain.model.board.Board;
 import com.battleship.domain.model.game.Game;
 import com.battleship.domain.model.handling.GameInitiationException;
 import com.battleship.domain.model.handling.InvalidPlayerException;
 import com.battleship.domain.model.handling.NoGameAvailableException;
 import com.battleship.domain.model.player.Player;
+import com.battleship.infrastructure.BattleShipBoardRepository;
+import com.battleship.infrastructure.BattleShipGameRepository;
 
 
 /**
@@ -33,6 +34,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Autowired
 	private BattleShipGameRepository gameRepository;
 	
+	@Autowired
+	private BattleShipBoardRepository battleShipBoardRepository;
+	
 	@Override
 	public Game retrieveLatestAvailableGame() throws GameInitiationException, NoGameAvailableException {
 		
@@ -46,10 +50,10 @@ public class RegistrationServiceImpl implements RegistrationService {
 	
 	
 	@Override
-	public Player registerNewPlayer(String lPlayerName) throws InvalidPlayerException, GameInitiationException, NoGameAvailableException {
+	public RegisterNewPlayerDTO registerNewPlayer(String lPlayerName) throws InvalidPlayerException, GameInitiationException, NoGameAvailableException {
 		
 		logger.debug("[RegistrationServiceImpl.registerNewPlayer] : New Player registration with name > "+lPlayerName);
-		
+		RegisterNewPlayerDTO registerNewPlayerDTO = new RegisterNewPlayerDTO();
 		boolean playerAddedSuccessfully = false;
 		Player newPlayer;
 		
@@ -57,16 +61,19 @@ public class RegistrationServiceImpl implements RegistrationService {
 			Game latestAvailableGame = this.retrieveLatestAvailableGame();
 			
 			newPlayer = new Player(lPlayerName);
+			Board board = battleShipBoardRepository.getNewBoard();
+			newPlayer.setBoardId(board.getBoardID());
 			newPlayer.setGameID(latestAvailableGame.getGameID());
 			
+			registerNewPlayerDTO.setPlayer(newPlayer);
+			registerNewPlayerDTO.setBoardSize(board.getBoardSize().length);
 			playerAddedSuccessfully = gameRepository.addNewPlayerByGameID(newPlayer, latestAvailableGame.getGameID());
 		}
 		
 		if(playerAddedSuccessfully){
 			logger.debug("[RegistrationServiceImpl.registerNewPlayer] : New Player registration done !! with name > "+lPlayerName);
-			return newPlayer;
+			return registerNewPlayerDTO;
 		}
-		
 		throw new NoGameAvailableException();
 	}
 

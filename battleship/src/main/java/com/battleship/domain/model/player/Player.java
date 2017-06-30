@@ -26,6 +26,8 @@ public class Player {
 	private boolean playerIsGameReady;
 
 	private Ship ship;
+	
+	private int boardId;
 
 	/**
 	 * This is default player constructor with ID and Name. 
@@ -43,7 +45,7 @@ public class Player {
 		this.setPlayerName(lPlayerName);
 	}
 
-	public long getPlayerID() {
+	public int getPlayerID() {
 		return playerID;
 	}
 
@@ -117,6 +119,20 @@ public class Player {
 			return false;
 		else
 			return true;
+	}
+
+	/**
+	 * @return the boardId
+	 */
+	public int getBoardId() {
+		return boardId;
+	}
+
+	/**
+	 * @param boardId the boardId to set
+	 */
+	public void setBoardId(int boardId) {
+		this.boardId = boardId;
 	}
 
 	

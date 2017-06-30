@@ -1,20 +1,18 @@
 package com.battleship.domain.model.ship;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Ship {
 
 	// This needs to be replaced with JPA/Database.
 	private static int autoIncrementShipID = 1;
-		
+
 	private int shipID;
-	
-	private List<String> playerShipCoordinates;
-	
-	public Ship(){
+
+	private boolean isDestroyed;
+
+	public Ship() {
 		this.setShipID(autoIncrementShipID++);
-		this.setPlayerShipCoordinates(new ArrayList<String>());
+		this.setDestroyed(false);
 	}
 
 	public int getShipID() {
@@ -25,12 +23,12 @@ public class Ship {
 		this.shipID = shipID;
 	}
 
-	public List<String> getPlayerShipCoordinates() {
-		return playerShipCoordinates;
+	public boolean isDestroyed() {
+		return isDestroyed;
 	}
 
-	public void setPlayerShipCoordinates(List<String> playerShipCoordinates) {
-		this.playerShipCoordinates = playerShipCoordinates;
+	public void setDestroyed(boolean isDestroyed) {
+		this.isDestroyed = isDestroyed;
 	}
-		
+
 }
